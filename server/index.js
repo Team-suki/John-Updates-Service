@@ -110,18 +110,18 @@ app.post('/api/comment/', function (req, res) {
     updateID: req.body.updateID,
     userName: req.body.userName,
     comment:req.body.comment,
-    createdAt: req.body.createdAt,
+    createdAt: Date.now(),
   })
   .then(function(){
-    res.send('sent to server');
+    res.send('sent comment to server');
   })
 });
 
 app.put('/api/comment/:id', function(req, res) {
-  const id = req.params.id;
+  const id = req.body.id;
   db.Update.update(
     { comment: req.body.comment },
-    { where: {updateID: id} }
+    { where: {id: id} }
   )
     .then((result) => {
       res.status(200).send('Comment successfully updated');
@@ -132,7 +132,7 @@ app.put('/api/comment/:id', function(req, res) {
 })
 
 app.delete('/api/comment/:id', function(req, res) {
-  const id = req.params.id;
+  const id = req.body.id;;
   db.Update.destroy(
     { where: {id: id} }
   )
