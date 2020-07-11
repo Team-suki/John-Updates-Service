@@ -11,8 +11,6 @@ const csvWriter = fs.createWriteStream(pathName);
 //write headers
 csvWriter.write('campaignID,updateID,title,author,imageUrl,createdAt,body,likes\n', encoding);
 
-const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-
 const generateUpdates = function(callback) {
   const createImage = function() {
     var url = 'http://picsum.photos/seed/'
@@ -21,7 +19,9 @@ const generateUpdates = function(callback) {
     return url+randomNumber+urlend;
   }
 
-  //Start CLI progress bar
+  // Initialize progress bar
+  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  // Start CLI progress bar
   bar.start(numOfRecords, 0);
 
   var updateId = 0;
