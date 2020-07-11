@@ -44,6 +44,7 @@
     "test": "jest --forceExit --detectOpenHandles",
     "start": "nodemon server/index.js -d --watch",
     "db:setup": "node db/seedScript.js",
+    "generate": "node --max-old-space-size=8192 db/generateData.js",
     "build": "webpack -d --watch"
   },
   "repository": {

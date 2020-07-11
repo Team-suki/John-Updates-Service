@@ -2,7 +2,7 @@ const faker = require('faker');
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 
-const numOfRecords = 100000;
+const numOfRecords = 10000000;
 
 const pathName = 'generatedData.csv';
 const encoding = 'utf8';
@@ -24,22 +24,23 @@ const generateUpdates = function(callback) {
   //Start CLI progress bar
   bar.start(numOfRecords, 0);
 
-  var id = 0;
-  var campaign = 0;
-  var updates = numOfRecords;
+  var updateId = 0;
+  var campaignId = 0;
+  var campaigns = numOfRecords;
 
   const writeUpdates = function() {
     var ok = true;
-    while (updates > 0 && ok) {
-      campaign++;
+    while (campaigns > 0 && ok) {
+      campaigns--;
+      campaignId++;
       var numOfUpdates = 1;
+      var numOfUpdates = Math.ceil(Math.random() * 6)
 
       for (var i = 0; i < numOfUpdates; i++) {
-        updates--;
-        id++;
+        updateId++;
 
-        const campaignID = campaign;
-        const updateID = id;
+        const campaignID = campaignId;
+        const updateID = updateId;
         const title = faker.lorem.words();
         const author = faker.name.findName();
         const imageUrl = createImage();
@@ -47,10 +48,10 @@ const generateUpdates = function(callback) {
         const body = faker.lorem.paragraphs();
         const likes = faker.random.number();
 
-        var update = `${campaignID},${id},${title},${author},${imageUrl},${createdAt},${body},${likes}\n`
+        var update = `${campaignID},${updateID},${title},${author},${imageUrl},${createdAt},${body},${likes}\n`
 
         //if this is the last record to be written, call write with callback
-        if (updates === 0) {
+        if (campaigns === 0) {
           bar.increment();
           csvWriter.write(update, encoding, callback);
         } else {
@@ -60,7 +61,7 @@ const generateUpdates = function(callback) {
         }
       }
     }
-    if (updates > 0) {
+    if (campaigns > 0) {
       csvWriter.once('drain', writeUpdates);
     }
   }
