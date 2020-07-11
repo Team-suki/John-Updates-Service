@@ -6,6 +6,7 @@
   "main": "./server/index.js",
   "dependencies": {
     "@babel/preset-typescript": "^7.10.1",
+    "cli-progress": "^3.8.2",
     "cors": "^2.8.5",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
