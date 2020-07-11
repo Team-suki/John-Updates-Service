@@ -2,7 +2,7 @@ const faker = require('faker');
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 
-const numOfRecords = 10000000;
+const numOfRecords = 10;
 
 const pathName = 'generatedData.csv';
 const encoding = 'utf8';
@@ -10,6 +10,9 @@ const csvWriter = fs.createWriteStream(pathName);
 
 //write headers
 csvWriter.write('campaignID,updateID,title,author,imageUrl,createdAt,body,likes\n', encoding);
+
+// Initialize progress bar
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
 const generateUpdates = function(callback) {
   const createImage = function() {
@@ -19,8 +22,6 @@ const generateUpdates = function(callback) {
     return url+randomNumber+urlend;
   }
 
-  // Initialize progress bar
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   // Start CLI progress bar
   bar.start(numOfRecords, 0);
 
@@ -45,7 +46,7 @@ const generateUpdates = function(callback) {
         const author = faker.name.findName();
         const imageUrl = createImage();
         const createdAt = faker.date.past();
-        const body = faker.lorem.paragraphs();
+        const body = faker.lorem.sentences();
         const likes = faker.random.number();
 
         var update = `${campaignID},${updateID},${title},${author},${imageUrl},${createdAt},${body},${likes}\n`
