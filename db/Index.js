@@ -1,22 +1,8 @@
-// mysql
-// .createConnection({
-//   user: DATABASE_USER,
-//   password: DATABASE_PASSWORD
-// })
-// .then((sqlConnection) => {
-//   sqlConnection
-//     .query(`CREATE DATABASE IF NOT EXISTS ${DATABASE_NAME};`)
-//     .then(() => {
-//       // Connect to sequelize here!
-//      })
-
-
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-
-const sequelize = new Sequelize('kickstarter', 'root', null, {
-  host: '127.0.0.1',
-  dialect: 'mysql'
+const sequelize = new Sequelize('kickstarter', null, null, {
+  //   host: '127.0.0.1',
+  dialect: 'postgres'
 });
 
 sequelize.authenticate()
@@ -25,8 +11,17 @@ sequelize.authenticate()
   })
   .catch(function(errors) {console.log('Unable to connect to the database:', errors)})
 
-class Update extends Model {}
-Update.init({
+const Update = sequelize.define('update', {
+  campaignID: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  updateID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    unique: true,
+    allowNull: false
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false
@@ -51,21 +46,15 @@ Update.init({
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  campaignID: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
 }, {
   sequelize,
   modelName: 'Update',
 });
 
-const Comment = sequelize.define('Comment', {
-  // Model attributes are defined here
-
+const Comment = sequelize.define('comment', {
   updateID: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: false
   },
   userName: {
     type: DataTypes.STRING,
@@ -83,6 +72,13 @@ const Comment = sequelize.define('Comment', {
   sequelize,
   modelName: 'Comment',
 });
+
+Update.associate = () => {
+  Update.hasMany(Comment, {foreignKey: 'updateID'})
+}
+Comment.associate = () => {
+  Comment.belongsTo(Update)
+}
 
 sequelize.sync();
 
