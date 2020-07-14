@@ -1,15 +1,19 @@
 const faker = require('faker');
+const moment = require('moment');
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 
 const numOfRecords = 10;
 
-const pathName = 'generatedData.csv';
+const updatesPathName = 'updates.csv';
 const encoding = 'utf8';
-const csvWriter = fs.createWriteStream(pathName);
+const updateWriter = fs.createWriteStream('./updates.csv');
+//const commentWriter = fs.createWriteStream('comments.csv');
 
 //write headers
-csvWriter.write('campaignID,updateID,title,author,imageUrl,createdAt,body,likes\n', encoding);
+updateWriter.write('campaignID,updateID,title,author,imageUrl,createdAt,body,likes,updatedAt\n', encoding);
+
+// commentWriter.write('campaignID,updateID,title,author,imageUrl,createdAt,body,likes\n', encoding);
 
 // Initialize progress bar
 const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
@@ -45,25 +49,26 @@ const generateUpdates = function(callback) {
         const title = faker.lorem.words();
         const author = faker.name.findName();
         const imageUrl = createImage();
-        const createdAt = faker.date.past();
+        const createdAt = moment(faker.date.past()).format();
         const body = faker.lorem.sentences();
         const likes = faker.random.number();
+        const updatedAt = moment(Date.now()).format();
 
-        var update = `${campaignID},${updateID},${title},${author},${imageUrl},${createdAt},${body},${likes}\n`
+        var update = `${campaignID},${updateID},${title},${author},${imageUrl},${createdAt},${body},${likes},${updatedAt}\n`
 
         //if this is the last record to be written, call write with callback
         if (campaigns === 0) {
           bar.increment();
-          csvWriter.write(update, encoding, callback);
+          updateWriter.write(update, encoding, callback);
         } else {
           //otherwise, must check if buffer still has space.
           bar.increment();
-          ok = csvWriter.write(update, encoding);
+          ok = updateWriter.write(update, encoding);
         }
       }
     }
     if (campaigns > 0) {
-      csvWriter.once('drain', writeUpdates);
+      updateWriter.once('drain', writeUpdates);
     }
   }
   writeUpdates();
@@ -75,5 +80,5 @@ generateUpdates(() => {
   const elapsed = (((endTime - startTime) / 1000) / 60).toFixed(3);
   bar.stop();
   console.log(`Finished writing all updates to CSV in ${elapsed} minutes`);
-  csvWriter.end()
+  updateWriter.end()
 });
