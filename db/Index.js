@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-const sequelize = new Sequelize('kickstarter', 'postgres', 'postgres', {
+const sequelize = new Sequelize('kickstarter', null, null, {
   //   host: '127.0.0.1',
   dialect: 'postgres'
 });
