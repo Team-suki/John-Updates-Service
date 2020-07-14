@@ -11,15 +11,16 @@ sequelize.authenticate()
   })
   .catch(function(errors) {console.log('Unable to connect to the database:', errors)})
 
-const Update = sequelize.define('Update', {
+const Update = sequelize.define('update', {
   campaignID: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: false
   },
   updateID: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     unique: true,
-    allowNull: true
+    allowNull: false
   },
   title: {
     type: DataTypes.STRING,
@@ -50,10 +51,10 @@ const Update = sequelize.define('Update', {
   modelName: 'Update',
 });
 
-const Comment = sequelize.define('Comment', {
+const Comment = sequelize.define('comment', {
   updateID: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: false
   },
   userName: {
     type: DataTypes.STRING,
