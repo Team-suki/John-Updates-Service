@@ -1,4 +1,4 @@
-
+require('newrelic');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -26,12 +26,15 @@ app.get('/:id', (req, res) => {
 // Updates
 ////////////////////////////////////////////////////////////////////////
 
-// Get Update by DB
+// Get Updates by campaignID
 app.get('/api/update/:id', function (req, res) {
-  db.Update.findOne({where: {id: req.params.id }})
+  db.Update.findAll({where: { campaignID: req.params.id }})
   .then(function(data){
     res.status(200).send(data);
   })
+  .catch(err) {
+    res.status(400).send(err);
+  }
 });
 
 // Get all updates
@@ -50,7 +53,8 @@ app.post('/api/update/', function(req, res) {
     createdAt: Date.now(),
     body: req.body.body,
     likes: req.body.likes,
-    campaignID: req.body.campaignID
+    campaignID: req.body.campaignID.
+    updatedAt: Date.now()
   })
   .then((response) => {
     res.status(200).send(response);
@@ -64,7 +68,7 @@ app.put('/api/update/:id', function(req, res) {
   const id = req.params.id;
   db.Update.update(
     { title: req.body.title},
-    { where: { id: id } }
+    { where: { updateID: id } }
   )
     .then((result) => {
       res.status(200).send('Record successfully updated');
@@ -77,7 +81,7 @@ app.put('/api/update/:id', function(req, res) {
 app.delete('/api/update/:id', function(req, res) {
   const id = req.params.id;
   db.Update.destroy(
-    { where: { id: id } }
+    { where: { updateID: id } }
   )
     .then((result) => {
       res.status(200).send('Record successfully deleted');
@@ -91,7 +95,7 @@ app.delete('/api/update/:id', function(req, res) {
 ////////////////////////////////////////////////////////////////////////
 
 app.get('/api/comment/:id', function (req, res) {
-  db.Comment.findAll({where: {updateID: req.params.id }})
+  db.Comment.findAll({where: {campaignID: req.params.id }})
   .then(function(data){
     res.status(200).send(data);
   })
@@ -112,16 +116,19 @@ app.post('/api/comment/', function (req, res) {
     comment:req.body.comment,
     createdAt: Date.now(),
   })
-  .then(function(){
-    res.send('sent comment to server');
+  .then((response) => {
+    res.status(200).send('sent comment to server');
   })
+  .catch(err) => {
+    res.status(400).send(err);
+  }
 });
 
 app.put('/api/comment/:id', function(req, res) {
   const id = req.body.id;
   db.Update.update(
     { comment: req.body.comment },
-    { where: {id: id} }
+    { where: {commentID: id} }
   )
     .then((result) => {
       res.status(200).send('Comment successfully updated');
@@ -134,7 +141,7 @@ app.put('/api/comment/:id', function(req, res) {
 app.delete('/api/comment/:id', function(req, res) {
   const id = req.body.id;;
   db.Update.destroy(
-    { where: {id: id} }
+    { where: {commentID: id} }
   )
     .then((result) => {
       res.status(200).send('Comment successfully deleted');
