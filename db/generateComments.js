@@ -3,7 +3,7 @@ const moment = require('moment');
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 
-const numOfRecords = 1000000;
+const numOfRecords = 10000000;
 
 const encoding = 'utf8';
 const commentWriter = fs.createWriteStream('db/data/comments.csv');
@@ -26,12 +26,12 @@ const generateComments = function(callback) {
     while (campaigns > 0 && ok) {
       campaigns--;
       campaignId++;
-      var numOfComments = 1;
+      updateId++;
+      var numOfComments = (campaignId > 9999000) ? 12 : 1;
       //var numOfComments = Math.ceil(Math.random() * 6)
 
       for (var i = 0; i < numOfComments; i++) {
         commentId++;
-        updateId++;
 
         const campaignID = campaignId;
         const updateID = updateId;

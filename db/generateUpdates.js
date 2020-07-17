@@ -3,7 +3,7 @@ const moment = require('moment');
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 
-const numOfRecords = 100;
+const numOfRecords = 10000000;
 
 const encoding = 'utf8';
 const updateWriter = fs.createWriteStream('db/data/updates.csv');
@@ -35,7 +35,8 @@ const generateUpdates = function(callback) {
     while (campaigns > 0 && ok) {
       campaigns--;
       campaignId++;
-      var numOfUpdates = 1;
+
+      var numOfUpdates = (campaignId > 9999000) ? 6 : 1;
       //var numOfUpdates = Math.ceil(Math.random() * 6)
 
       for (var i = 0; i < numOfUpdates; i++) {
