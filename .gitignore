@@ -23,4 +23,8 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 
+#Generated Data
 db/data/
+
+#Stress Testing
+newrelic.js
