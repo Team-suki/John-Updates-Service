@@ -52,8 +52,18 @@ const Update = sequelize.define('update', {
 });
 
 const Comment = sequelize.define('comment', {
+  campaignID: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   updateID: {
     type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  commentID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    unique: true,
     allowNull: false
   },
   userName: {
