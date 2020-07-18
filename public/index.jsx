@@ -26,12 +26,17 @@ class Index extends React.Component {
       type: 'GET',
       url: `/api/update${window.location.pathname}`
     }).then((results) =>{
+      var id = window.location.pathname
+      id = parseInt(id.substring(1));
+      //console.log(results);
       this.setState({
-        updates: results
+        campaignID: id,
+        id: id,
+        updates: results[0]
       });
       $.ajax({
         type: 'GET',
-        url: `/api/comment/${results.id}`
+        url: `/api/comment/${results[0].campaignID}`
       }).then((res) =>{
         this.setState({
           comments: res
@@ -41,6 +46,9 @@ class Index extends React.Component {
   }
 
   send (thing) {
+    thing.campaignID = this.state.campaignID;
+    thing.updateID = this.state.updates.updateID;
+
     $.ajax({
       type: "POST",
       url: "/api/comment",

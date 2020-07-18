@@ -32,9 +32,9 @@ app.get('/api/update/:id', function (req, res) {
   .then(function(data){
     res.status(200).send(data);
   })
-  .catch(err) {
+  .catch((err) => {
     res.status(400).send(err);
-  }
+  })
 });
 
 // Get all updates
@@ -53,7 +53,7 @@ app.post('/api/update/', function(req, res) {
     createdAt: Date.now(),
     body: req.body.body,
     likes: req.body.likes,
-    campaignID: req.body.campaignID.
+    campaignID: req.body.campaignID,
     updatedAt: Date.now()
   })
   .then((response) => {
@@ -73,7 +73,7 @@ app.put('/api/update/:id', function(req, res) {
     .then((result) => {
       res.status(200).send('Record successfully updated');
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).send(err)
     })
 })
@@ -95,9 +95,12 @@ app.delete('/api/update/:id', function(req, res) {
 ////////////////////////////////////////////////////////////////////////
 
 app.get('/api/comment/:id', function (req, res) {
-  db.Comment.findAll({where: {campaignID: req.params.id }})
+  db.Comment.findAll({where: {campaignID: req.params.id}})
   .then(function(data){
     res.status(200).send(data);
+  })
+  .catch((err) => {
+    res.status(400).send(err);
   })
 });
 
@@ -110,18 +113,21 @@ app.get('/api/comment/:id', function (req, res) {
 // });
 
 app.post('/api/comment/', function (req, res) {
+  console.log(req.body);
   db.Comment.create({
+    campaignID: req.body.campaignID,
     updateID: req.body.updateID,
     userName: req.body.userName,
-    comment:req.body.comment,
+    comment: req.body.comment,
     createdAt: Date.now(),
   })
   .then((response) => {
     res.status(200).send('sent comment to server');
   })
-  .catch(err) => {
+  .catch((err) => {
+    console.log(err);
     res.status(400).send(err);
-  }
+  })
 });
 
 app.put('/api/comment/:id', function(req, res) {
