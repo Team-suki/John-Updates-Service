@@ -19,6 +19,7 @@ const Update = sequelize.define('update', {
   updateID: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
     unique: true,
     allowNull: false
   },
@@ -64,6 +65,7 @@ const Comment = sequelize.define('comment', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     unique: true,
+    autoIncrement: true,
     allowNull: false
   },
   userName: {
