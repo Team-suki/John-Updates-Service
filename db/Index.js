@@ -1,8 +1,9 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
+const keys = require('./config.js').keys
 
-const sequelize = new Sequelize('kickstarter', null, null, {
-  //   host: '127.0.0.1',
-  dialect: 'postgres'
+const sequelize = new Sequelize('kickstarter', keys.username, keys.password, {
+  host: keys.host,
+  dialect: 'postgres',
 });
 
 sequelize.authenticate()
