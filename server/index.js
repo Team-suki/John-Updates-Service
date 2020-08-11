@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
-const port = 3001;
+const port = process.env.PORT || 3001;
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const db = require('../db/Index.js');
@@ -158,4 +158,4 @@ app.delete('/api/comment/:id', function(req, res) {
 })
 
 
-app.listen(port, () => console.log(`listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`listening on port:${port}`))
