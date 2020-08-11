@@ -30,8 +30,7 @@
 - Rewards module mounts to the div with id of 'rewards'
 - Rewards modal window mounts to the div with id of 'modal-root'
 ```html
-<div id="rewards"></div>
-<div id="modal-root"></div>
+<div id="update"></div>
 ```
 
 ## Installation
